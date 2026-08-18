@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior Engineering Roles — SF Bay Area & Remote</title>
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --accent: #38bdf8; --green: #4ade80; --yellow: #fbbf24; --purple: #a78bfa; --pink: #f472b6; --text: #e2e8f0; --muted: #94a3b8; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-bottom: 1px solid var(--border); padding: 24px 32px; position: sticky; top: 0; z-index: 100; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .header .subtitle { color: var(--muted); font-size: 13px; }
+  .stats { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+  .stat { background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); border-radius: 8px; padding: 8px 14px; font-size: 12px; }
+  .stat strong { color: var(--accent); font-size: 16px; margin-right: 4px; }
+  .controls { padding: 16px 32px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); background: rgba(15,23,42,0.8); position: sticky; top: 82px; z-index: 99; }
+  .controls input[type="text"] { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 6px; font-size: 13px; width: 240px; }
+  .controls input:focus { outline: none; border-color: var(--accent); }
+  .controls select { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .controls select:focus { outline: none; border-color: var(--accent); }
+  .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .badge-source { background: rgba(56,189,248,0.15); color: var(--accent); }
+  .badge-level { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .badge-easy { background: rgba(74,222,128,0.15); color: var(--green); }
+  .badge-remote { background: rgba(251,191,36,0.15); color: var(--yellow); }
+  .badge-leadership { background: rgba(244,114,182,0.15); color: var(--pink); }
+  .grid { padding: 24px 32px; display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: border-color 0.2s, transform 0.15s; display: flex; flex-direction: column; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .card-company { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+  .card-title a { color: var(--text); text-decoration: none; }
+  .card-title a:hover { color: var(--accent); }
+  .card-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+  .card-meta span { display: flex; align-items: center; gap: 5px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; flex-grow: 1; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+  .pay { font-size: 14px; font-weight: 700; color: var(--green); }
+  .apply-btn { background: var(--accent); color: #0f172a; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; transition: opacity 0.2s; }
+  .apply-btn:hover { opacity: 0.85; }
+  .count-display { color: var(--muted); font-size: 13px; padding: 0 32px 16px; }
+  @media (max-width: 768px) { .grid { grid-template-columns: 1fr; padding: 16px; } .header, .controls { padding-left: 16px; padding-right: 16px; } .count-display { padding: 0 16px 16px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Senior Engineering Roles — SF Bay Area & Remote</h1>
+  <div class="subtitle">Search completed Aug 17, 2026 · Built In, Greenhouse, Lever, Dice, LinkedIn</div>
+  <div class="stats" id="stats"></div>
+</div>
+<div class="controls">
+  <input type="text" id="search" placeholder="Search title, company, keywords..." oninput="filterJobs()">
+  <select id="filterLevel" onchange="filterJobs()">
+    <option value="">All Levels</option>
+    <option value="VP/SVP">VP / SVP</option>
+    <option value="Director/Sr. Director">Director / Sr. Director</option>
+    <option value="Senior Manager">Senior Manager</option>
+    <option value="Engineering Manager">Engineering Manager</option>
+  </select>
+  <select id="filterSource" onchange="filterJobs()">
+    <option value="">All Sources</option>
+  </select>
+  <select id="filterLocation" onchange="filterJobs()">
+    <option value="">All Locations</option>
+    <option value="Remote">Remote</option>
+    <option value="San Francisco">San Francisco</option>
+    <option value="Hybrid">Hybrid</option>
+  </select>
+  <select id="sortBy" onchange="filterJobs()">
+    <option value="recency">Sort: Recency</option>
+    <option value="pay-high">Sort: Pay (High→Low)</option>
+    <option value="pay-low">Sort: Pay (Low→High)</option>
+    <option value="alpha">Sort: Company A→Z</option>
+  </select>
+</div>
+<div class="count-display" id="countDisplay"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+const jobs = [
+  { title: "VP, Software Engineering", company: "Salesforce", pay: null, payMax: null, location: "San Francisco, CA", source: "Salesforce", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.salesforce.com/company/careers/jobs/JR355491/vp-software-engineering", desc: "Lead a global team of engineers and architects, driving innovation in AI-driven configuration, constraint modeling, and enterprise platform capabilities." },
+  { title: "VP, Engineering", company: "HopSkipDrive", pay: null, payMax: null, location: "Remote", source: "Greenhouse", level: "VP/SVP", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://job-boards.greenhouse.io/hopskipdrive/jobs/6002665004", desc: "Lead the engineering organization through its next phase of scale, partnering with the CPTO to drive execution, foster high-performance culture, and lead the transition toward AI-accelerated engineering." },
+  { title: "Director of Engineering", company: "Kiddom", pay: null, payMax: null, location: "San Francisco, CA (Hybrid)", source: "Lever", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: true, leadership: true, url: "https://jobs.lever.co/kiddom/a988502f-f703-41de-8cb6-57324fc546f1", desc: "Hands-on Director leading key parts of the engineering org, driving AI-first product vision, managing multiple teams, and evolving platform for district-scale impact in EdTech." },
+  { title: "VP, Engineering", company: "AMP Robotics", pay: null, payMax: null, location: "Remote / Hybrid (US)", source: "Built In", level: "VP/SVP", easyApply: true, remote: true, hybrid: true, leadership: true, url: "https://www.builtinsf.com/job/vice-president-engineering/10393690", desc: "Lead AMP's multidisciplinary engineering org across hardware, software, AI, and infrastructure; drive product development, quality systems, and reliable deployments for robotics." },
+  { title: "VP of Engineering", company: "Confidential (Logistics)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-engineering/10692750", desc: "Lead and scale engineering for logistics, chain-of-custody, fintech, inventory, and customer platforms. Own technical vision, architecture, and cloud infrastructure." },
+  { title: "Head/VP of Engineering", company: "Confidential (Biotech)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/head-vp-engineering/10251509", desc: "Lead the engineering org, define technical strategy and roadmap, own architecture and cloud pipelines, drive product delivery, and remain hands-on in code and architecture." },
+  { title: "VP, Engineering", company: "Workato", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-engineering/9841153", desc: "Lead and scale the engineering org for Workato's developer platform and tooling, delivering CLI, VS Code extension, SDKs, APIs, and AI developer tools." },
+  { title: "VP of Engineering", company: "Confidential (Fintech)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-engineering-san-francisco-hq/10211968", desc: "Lead a ~30-person engineering org building highly-correct, scalable billing infrastructure. Coach managers and senior ICs, build leadership bench, set technical strategy." },
+  { title: "VP of Engineering", company: "Confidential (Dating App)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-engineering-or-director-engineering/6203875", desc: "Lead the engineering team, oversee product development for the dating app, manage resources, and ensure high app quality and scalability." },
+  { title: "VP Software Engineering, Robotics & Systems", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-software-engineering/8471532", desc: "Lead software and robotics teams, ensuring alignment with product goals while driving engineering excellence in a rapidly scaling environment." },
+  { title: "Senior Vice President of Engineering", company: "Next League", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vice-president-engineering/9383566", desc: "Lead engineering and AI efforts, mentoring teams, defining technology roadmaps, and collaborating with clients to deliver innovative solutions." },
+  { title: "VP, Payments Engineering", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-payments-engineering/10510463", desc: "Lead global engineering teams to design, build, and operate cloud-native payments platforms. Drive AI-native engineering practices and platform modernization." },
+  { title: "VP of Engineering, Trade", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-engineering-trade/10481591", desc: "Lead and scale the Trade engineering org, owning technical vision, architecture, and roadmap for trading systems including matching engines and order/execution infrastructure." },
+  { title: "VP of Product Engineering", company: "Confidential (Fintech)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-product-engineering/10575004", desc: "Lead and scale product-facing engineering for consumer fintech products. Hire and grow teams, drive architecture and code quality, embed AI-native tooling." },
+  { title: "VP, Data Platform & Engineering", company: "WISEcode", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/vp-data-platform-engineering/10648005", desc: "Lead WISEcode's data platform and engineering teams to build AI-native, secure, observable data products with automated agentic pipelines." },
+  { title: "SVP of Engineering", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/svp-engineering/9762047", desc: "Lead engineering strategy and delivery for customer-facing web and mobile platforms; drive AI-native transformation, increase conversion and speed-to-fund." },
+  { title: "Senior Manager / Director of Engineering, Consumer", company: "Nourish", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/senior-manager-director-engineering-consumer/10693865", desc: "Lead and grow a consumer engineering org (8-12+ engineers), set multi-year technical direction, stay hands-on in architecture, build an AI-powered health companion." },
+  { title: "Director of Engineering - Infrastructure & Operations", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/engineering-manager-platform/10374717", desc: "Lead and scale a multi-functional platform engineering organization (SRE, Operations, Data & AI Platform, Database Engineering). Own the cloud platform and infrastructure-as-product." },
+  { title: "Director of Engineering, Internal Platforms & Developer Experience", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-engineering-internal-platforms-developer-experience/9157443", desc: "Lead platform engineering strategy and teams, enhancing developer experience, driving AI integration, and establishing governance for development practices." },
+  { title: "Senior Director of Engineering, Developer Productivity", company: "MongoDB", pay: 151000, payMax: 297000, location: "Remote (SF Bay Area)", source: "Built In", level: "Director/Sr. Director", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/senior-director-engineering/10293801", desc: "Lead the Pipeline team to own strategy and execution for MongoDB's end-to-end software delivery platform. Drive reliability, scalability, security, and developer experience." },
+  { title: "Director of Forward Deployed Engineering", company: "Vercel", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-forward-deployed-engineering/10271982", desc: "Lead and build Vercel's Forward Deployed Engineering and Professional Services function. Hire and develop the team, ensure delivery excellence from discovery to production." },
+  { title: "Engineering Director, Payments Platform", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/engineering-director-payments-platform/10615878", desc: "Lead and execute the Payments Platform vision: own strategy, architecture, and roadmap for payment processing, routing, settlement, reconciliation and partner integrations." },
+  { title: "Director of Engineering, Go-To-Market (Salesforce CRM & CPQ)", company: "Autodesk", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-engineering-go-market-salesforce-crm-cpq/10079793", desc: "Lead architecture and delivery of Autodesk's Opportunity-to-Order platform (Salesforce CRM, CPQ, CLM). Champion API-first patterns and integrate AI/LLMs." },
+  { title: "Director of Engineering, Ads", company: "Confidential", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-engineering-ads/9886638", desc: "Lead multiple engineering teams to define and ship next-generation live-stream ad products. Own technical vision and architecture, develop managers." },
+  { title: "Director, Head of SMA Portfolio Management Engineering", company: "BlackRock", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-head-sma-portfolio-management-engineering/7926094", desc: "Lead the engineering team for BlackRock's SMA Solutions, defining strategy and overseeing the development of a scalable portfolio construction platform." },
+  { title: "Director of Engineering, New Products", company: "Confidential (Dental AI)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-engineering-new-products/10643351", desc: "Lead and grow a 10+ engineer team to build AI-driven Revenue Cycle Management products for dental care. Define architecture and engineering standards." },
+  { title: "Engineering Director, Developer Experience", company: "Adyen", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/engineering-director-developer-experience/8164671", desc: "Lead the Developer Experience team at Adyen, improving integration processes for developers, maintaining high standards, and advocating for developer needs." },
+  { title: "Director of Engineering, Consumer Products", company: "Confidential (Healthcare)", pay: null, payMax: null, location: "San Francisco, CA", source: "Built In", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.builtinsf.com/job/director-engineering-consumer-products/10298776", desc: "Lead multiple engineering teams owning the patient journey, plus QA and Product Support across apps. Manage managers, set technical quality standards, adopt AI-assisted development." },
+  { title: "Head of Field Engineering Operations", company: "Vercel", pay: null, payMax: null, location: "San Francisco, CA (Hybrid)", source: "Greenhouse", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: true, leadership: true, url: "https://job-boards.greenhouse.io/vercel/jobs/5979111004", desc: "Architect systems, processes, and insights enabling a fast-growing Field Engineering organization to scale. Partner with VP of Field Engineering on operational backbone." },
+  { title: "Senior Engineering Manager", company: "Vetcove", pay: 170000, payMax: 230000, location: "Remote (SF Bay Area)", source: "Built In", level: "Senior Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Vetcove", desc: "Lead and grow a software engineering team, drive execution from planning through rollout, mentor engineers, contribute to architecture and code reviews in Healthtech/Pet care." },
+  { title: "Engineering Manager, Console Team", company: "Deepgram", pay: 185000, payMax: 260000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Deepgram", desc: "Lead a team developing web applications and AI tools, optimizing product-led growth strategies and enhancing the developer experience. AI/ML/NLP focus." },
+  { title: "Engineering Manager, Backend Platforms", company: "Whatnot", pay: 280000, payMax: 330000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Whatnot", desc: "Oversee the Backend Platforms team, managing engineering talent, shaping strategies, ensuring platform reliability and performance, and guiding architectural decisions." },
+  { title: "Engineering Manager, Core", company: "Fieldguide", pay: 200000, payMax: 230000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Fieldguide", desc: "Engineering Manager at an AI-powered audit and compliance platform. Lead core engineering efforts with focus on reliability and scalability." },
+  { title: "Engineering Manager, Frontend Platform & Mobile", company: "Zocdoc", pay: 210000, payMax: 270000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Zocdoc", desc: "Lead and grow a frontend platform team owning Zocdoc's accessible React component library and design system. Drive adoption across web and mobile." },
+  { title: "Engineering Manager, Data Foundations", company: "GitLab", pay: 153000, payMax: 259000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=GitLab", desc: "Lead Data Foundations team at GitLab. Cloud, Security, and DevOps focused, managing data infrastructure and engineering practices." },
+  { title: "Engineering Manager, Tenant Scale: Git", company: "GitLab", pay: null, payMax: null, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=GitLab-Tenant", desc: "Manage a technical team focused on Git and Git-related infrastructure, balancing upstream open-source work with GitLab priorities. Focus on scalability and performance." },
+  { title: "Engineering Manager", company: "LeafLink", pay: 170000, payMax: 230000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=LeafLink", desc: "Lead and mentor a team building LeafLink's eCommerce marketplace. Provide technical leadership, set architecture and delivery plans, manage incidents in Cannabis/fintech space." },
+  { title: "Engineering Manager - Product & Platform Delivery", company: "Runpod", pay: 175000, payMax: 250000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Runpod", desc: "Own a managed attribution browser, set technical strategy, partner with product and cross-functional teams, ensure data reliability, security, and scale for national security customers." },
+  { title: "Engineering Manager - Americas", company: "Ashby", pay: 200000, payMax: 275000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Ashby", desc: "Manage and grow multiple engineering teams (3-5 direct reports, hire 3-5 more), coach engineers to own large projects, lead department-wide initiatives." },
+  { title: "Senior Engineering Manager, Developer Productivity", company: "MongoDB", pay: 151000, payMax: 297000, location: "Remote (SF Bay Area)", source: "Built In", level: "Senior Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=MongoDB", desc: "Lead teams focused on developer productivity and observability, build metrics and analytics infrastructure, and drive AI-enabled tooling for the software development lifecycle." },
+  { title: "Engineering Manager", company: "Elicit", pay: 250000, payMax: 300000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Elicit", desc: "Engineering Manager at an AI/Conversational AI company. Focus on agentic AI, cloud, distributed systems, generative AI, and large language models." },
+  { title: "Engineering Manager", company: "Bankrate", pay: 160000, payMax: 210000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Bankrate", desc: "Lead a small team (2-4) as a hands-on engineering manager, owning sprint delivery, team health, performance management, and incident response for fintech products." },
+  { title: "Engineering Manager", company: "Commerce", pay: 165000, payMax: 247000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Commerce", desc: "Manage a high-performing software engineering team, driving product roadmap and technical direction, while ensuring quality, performance, and innovation in AI/Cloud." },
+  { title: "Engineering Manager", company: "Valon", pay: 242000, payMax: 284000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=Valon", desc: "Lead and mentor a team of engineers, develop R&D strategies, set engineering direction at a Fintech/Real Estate company." },
+  { title: "Manager, Engineering - Customer & Application", company: "OppFi", pay: 148000, payMax: 220000, location: "Remote (SF Bay Area)", source: "Built In", level: "Engineering Manager", easyApply: true, remote: true, hybrid: false, leadership: true, url: "https://www.builtinsf.com/jobs/remote/dev-engineering/management?company=OppFi", desc: "Lead the Customer & Application team, manage engineers, coordinate development efforts, drive Agile processes, and mentor team members in fintech." },
+  { title: "Engineering Manager, Platform", company: "Dealpath", pay: 200000, payMax: 230000, location: "San Francisco, CA (Hybrid)", source: "Dice", level: "Engineering Manager", easyApply: false, remote: false, hybrid: true, leadership: true, url: "https://www.dice.com/job-detail/6bcf9af0-e975-4b66-a3f7-30993aa6220b", desc: "Lead, mentor, and coach a team of talented software engineers. Champion AI-forward engineering practices. Drive execution of high-impact product initiatives." },
+  { title: "Senior Engineering Manager, Credit and Lending", company: "Altruist", pay: 203000, payMax: 275000, location: "San Francisco, CA", source: "Dice", level: "Senior Manager", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.dice.com/jobs?q=Senior+Engineering+Manager&location=San+Francisco%2C+CA", desc: "Altruist is transforming the wealth management industry by building an AI platform for wealth professionals. Lead credit and lending engineering." },
+  { title: "Engineering Manager, Agent", company: "Descript", pay: 222431, payMax: 261684, location: "Remote or San Francisco, CA", source: "Dice", level: "Engineering Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.dice.com/jobs?q=Engineering+Manager&location=San+Francisco%2C+CA", desc: "Lead the Agent team at Descript, focused on building the world's best Agentic Video Editor (Underlord). AI-native content creation." },
+  { title: "Senior Software Engineering Manager", company: "Planet", pay: 172200, payMax: 215200, location: "Remote", source: "Dice", level: "Senior Manager", easyApply: false, remote: true, hybrid: false, leadership: true, url: "https://www.dice.com/job-detail/4a8c4af8-c997-4848-834d-763ecb74f600", desc: "Senior Software Engineering Manager at Planet, leading satellite/geospatial imaging technology teams." },
+  { title: "Head of Engineering (Director/VP)", company: "SignalFire Portfolio", pay: null, payMax: null, location: "San Francisco, CA", source: "Dice", level: "VP/SVP", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://www.dice.com/jobs?q=Head+of+Engineering&location=San+Francisco%2C+CA", desc: "SignalFire talent network for Head of Engineering roles at VC-backed startups. Portfolio spans 200+ companies across AI, cybersecurity, healthtech, fintech." },
+  { title: "Engineering Director", company: "City & County of San Francisco", pay: 169858, payMax: 216710, location: "San Francisco, CA", source: "Lever", level: "Director/Sr. Director", easyApply: false, remote: false, hybrid: false, leadership: true, url: "https://careers.sf.gov/role?id=3743990011504126", desc: "Engineering Director for Digital Services: oversee SF.gov, DAHLIA housing portal, and 40+ applications. Guide AI adoption, manage 15+ engineers, and lead citywide technical standards." }
+];
+
+// Populate source filter
+const sourceSet = [...new Set(jobs.map(j => j.source))];
+const filterSource = document.getElementById('filterSource');
+sourceSet.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; filterSource.appendChild(o); });
+
+function filterJobs() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const level = document.getElementById('filterLevel').value;
+  const source = document.getElementById('filterSource').value;
+  const loc = document.getElementById('filterLocation').value;
+  const sort = document.getElementById('sortBy').value;
+
+  let filtered = jobs.filter(j => {
+    if (q && !(j.title.toLowerCase().includes(q) || j.company.toLowerCase().includes(q) || j.desc.toLowerCase().includes(q))) return false;
+    if (level && j.level !== level) return false;
+    if (source && j.source !== source) return false;
+    if (loc === 'Remote' && !j.remote) return false;
+    if (loc === 'San Francisco' && j.remote && !j.hybrid) return false;
+    if (loc === 'Hybrid' && !j.hybrid) return false;
+    return true;
+  });
+
+  if (sort === 'pay-high') filtered.sort((a, b) => (b.payMax || 0) - (a.payMax || 0));
+  else if (sort === 'pay-low') filtered.sort((a, b) => (a.pay || 0) - (b.pay || 0));
+  else if (sort === 'alpha') filtered.sort((a, b) => a.company.localeCompare(b.company));
+  else filtered.sort((a, b) => (b.payMax || 0) - (a.payMax || 0));
+
+  renderGrid(filtered);
+}
+
+function renderGrid(list) {
+  const grid = document.getElementById('grid');
+  document.getElementById('countDisplay').textContent = `Showing ${list.length} of ${jobs.length} roles`;
+  grid.innerHTML = list.map(j => `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-company">${j.company}</div>
+        <span class="badge badge-level">${j.level}</span>
+      </div>
+      <div class="card-title"><a href="${j.url}" target="_blank" rel="noopener">${j.title}</a></div>
+      <div class="card-meta">
+        <span>📍 ${j.location}</span>
+        ${j.pay ? `<span>💰 $${(j.pay/1000).toFixed(0)}K – $${(j.payMax/1000).toFixed(0)}K</span>` : ''}
+      </div>
+      <div class="card-desc">${j.desc}</div>
+      <div class="card-badges">
+        <span class="badge badge-source">${j.source}</span>
+        ${j.remote ? '<span class="badge badge-remote">Remote</span>' : ''}
+        ${j.hybrid ? '<span class="badge badge-remote">Hybrid</span>' : ''}
+        ${j.easyApply ? '<span class="badge badge-easy">Easy Apply</span>' : ''}
+        ${j.leadership ? '<span class="badge badge-leadership">Leadership</span>' : ''}
+      </div>
+      <div class="card-bottom">
+        <div class="pay">${j.pay ? `$${(j.pay/1000).toFixed(0)}K–$${(j.payMax/1000).toFixed(0)}K` : 'Pay not listed'}</div>
+        <a class="apply-btn" href="${j.url}" target="_blank" rel="noopener">Apply →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Stats
+const leadershipCount = jobs.filter(j => j.leadership).length;
+const remoteCount = jobs.filter(j => j.remote).length;
+const withPayCount = jobs.filter(j => j.pay).length;
+document.getElementById('stats').innerHTML = `
+  <div class="stat"><strong>${jobs.length}</strong> total roles</div>
+  <div class="stat"><strong>${leadershipCount}</strong> leadership</div>
+  <div class="stat"><strong>${remoteCount}</strong> remote</div>
+  <div class="stat"><strong>${withPayCount}</strong> with salary data</div>
+  <div class="stat"><strong>${sourceSet.length}</strong> sources</div>
+`;
+
+filterJobs();
+</script>
+</body>
+</html>
