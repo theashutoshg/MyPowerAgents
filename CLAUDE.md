@@ -23,6 +23,7 @@ As more agents are added, give each its own folder (e.g. `Job-Application-Assist
 | Folder | Skill name | Purpose |
 |---|---|---|
 | `Job-Finder/` | `job-finder` | Searches LinkedIn, Indeed, ZipRecruiter, Dice, Google Jobs, and company career portals (Greenhouse, Lever, corporate ATS) for open roles; optionally ranks matches against a resume; builds a single-file interactive HTML dashboard. Can also expand/refresh a prior search and audit an existing dashboard for closed/removed listings. |
+| `Interview-Practice-Coach/` | `interview-practice-coach` | Runs a mock behavioral/technical interview from a pasted job description: asks one competency-based question at a time, coaches answers into STAR-format stories against a consistent rubric, and pressure-tests them with likely follow-ups. Model-agnostic workflow. |
 
 ## Conventions
 
@@ -35,3 +36,4 @@ As more agents are added, give each its own folder (e.g. `Job-Application-Assist
 
 - **2026-08-14** — Added `Job-Finder/SKILL.md`: full job-search-and-dashboard skill, including a new Step 5 for auditing an existing dashboard and removing closed/stale listings (with explicit notes on which sources can/can't be reliably re-verified: Built In/Greenhouse/Lever/Dice fetch cleanly, ZipRecruiter redirect URLs and JS-rendered ATS portals like Mastercard/Adyen cannot be confirmed via automated fetch).
 - **2026-08-17** — Added README.md with installation, running, architecture, and source-reliability docs.
+- **2026-08-18** — Added `Interview-Practice-Coach/SKILL.md`: mock-interview skill that reads a pasted JD, asks one competency question at a time, and coaches answers into STAR stories; reformatted from its packaged `.skill` export into this repo's `## Step N` / `## Notes` convention and made explicitly model-agnostic (no hardcoded model name).

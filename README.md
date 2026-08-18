@@ -22,6 +22,7 @@ As more agents are added, give each its own folder with a `SKILL.md` at minimum,
 | Folder | Skill name | Purpose |
 |---|---|---|
 | `Job-Finder/` | `job-finder` | Searches LinkedIn, Indeed, ZipRecruiter, Dice, Google Jobs, and company career portals (Greenhouse, Lever, corporate ATS) for open roles; optionally ranks matches against a resume; builds a single-file interactive HTML dashboard. Can also expand/refresh a prior search and audit an existing dashboard for closed/removed listings. |
+| `Interview-Practice-Coach/` | `interview-practice-coach` | Runs a mock behavioral/technical interview from a pasted job description: asks one competency-based question at a time, coaches answers into STAR-format stories against a consistent rubric, and pressure-tests them with likely follow-ups. Model-agnostic workflow. |
 
 ---
 
@@ -161,3 +162,4 @@ The skill is a workflow definition, not executable code. opencode's agent reads 
 
 - **2026-08-14** — Added `Job-Finder/SKILL.md`: full job-search-and-dashboard skill, including Step 5 for auditing an existing dashboard and removing closed/stale listings.
 - **2026-08-17** — Added this README with installation, usage, and architecture docs.
+- **2026-08-18** — Added `Interview-Practice-Coach/SKILL.md`: mock-interview skill (JD → one question at a time → STAR coaching), converted from its packaged `.skill` export and made model-agnostic.
