@@ -1,6 +1,8 @@
 # MyPowerAgents
 
-A personal library of Claude skills/agents, checked in here for reuse and version history.
+A personal library of opencode skills/agents, checked in here for reuse and version history.
+
+> **Full usage docs:** See [README.md](README.md) for installation, running, and architecture details.
 
 ## Repo layout
 
@@ -8,7 +10,8 @@ Each agent lives in its own top-level folder, named to match the skill:
 
 ```
 MyPowerAgents/
-├── CLAUDE.md              # this file — repo-wide index and conventions
+├── README.md              # installation, usage, and architecture docs
+├── CLAUDE.md              # this file — repo-wide conventions
 └── Job-Finder/
     └── SKILL.md            # the job-finder skill definition
 ```
@@ -31,3 +34,4 @@ As more agents are added, give each its own folder (e.g. `Job-Application-Assist
 ## Change log
 
 - **2026-08-14** — Added `Job-Finder/SKILL.md`: full job-search-and-dashboard skill, including a new Step 5 for auditing an existing dashboard and removing closed/stale listings (with explicit notes on which sources can/can't be reliably re-verified: Built In/Greenhouse/Lever/Dice fetch cleanly, ZipRecruiter redirect URLs and JS-rendered ATS portals like Mastercard/Adyen cannot be confirmed via automated fetch).
+- **2026-08-17** — Added README.md with installation, running, architecture, and source-reliability docs.
