@@ -1,6 +1,6 @@
 ---
 name: github-profile-builder
-description: "Creates or updates a GitHub Pages profile site (index.html) hosted at <user>.github.io. Use this whenever the user wants to build, refresh, or redesign their public GitHub profile page, add a new section (featured work, skills, experience, stats), or regenerate the page from their resume/LinkedIn data — even if they don't mention GitHub Pages by name."
+description: "Creates or updates a GitHub Pages profile site (index.html) hosted at <user>.github.io, OR a GitHub Profile README bio page (README.md) that appears at github.com/<user>. Use this whenever the user wants to build, refresh, or redesign their public GitHub profile page, add a new section (featured work, skills, experience, stats), create a profile README bio, or regenerate either page from their resume/LinkedIn data — even if they don't mention GitHub Pages or profile README by name."
 ---
 
 # GitHub Profile Builder
@@ -9,8 +9,10 @@ Creates a single-file, self-contained `index.html` profile page for a GitHub Pag
 
 ## Step 0: Determine mode — create vs. update
 
-- **Create (fresh repo)** — the user does not yet have a `<username>.github.io` repo. Guide them through setup (see Step 6) and then generate the page.
-- **Update (existing repo)** — the user already has a profile page and wants to change content, add sections, or restyle it. Read the existing `index.html`, identify what to change, and apply edits in place. Always preserve the existing design language (colors, gradients, card styles) unless the user explicitly asks for a redesign.
+- **GitHub Pages site (create)** — the user does not yet have a `<username>.github.io` repo. Guide them through setup (see Step 6) and then generate the page.
+- **GitHub Pages site (update)** — the user already has a profile page and wants to change content, add sections, or restyle it. Read the existing `index.html`, identify what to change, and apply edits in place. Always preserve the existing design language (colors, gradients, card styles) unless the user explicitly asks for a redesign.
+- **Profile README (create/update)** — the user wants a Markdown bio on their GitHub profile page (`github.com/<username>`). See Step 7 for setup and generation instructions.
+- **Both** — the user wants a complete GitHub presence: profile README for the quick bio + Pages site for the full portfolio.
 
 Ask the user which mode they need if it isn't obvious from context.
 
@@ -142,6 +144,119 @@ Changes appear on the live site within 1-2 minutes.
 ### Optional: Custom Domain
 
 If you own a domain, add a `CNAME` file to the repo root containing your domain, then configure DNS to point to `<username>.github.io`.
+
+## Step 7: GitHub Profile README Bio Page
+
+In addition to the GitHub Pages site (`<username>.github.io`), GitHub supports a **profile README** — a special `README.md` that appears at the top of your public profile page (`github.com/<username>`). This is separate from the Pages site and is great for a quick bio, badges, and pinned content.
+
+### What is a GitHub Profile README?
+
+GitHub has a hidden feature: if you create a **public repository with the exact same name as your username** (e.g. `theashutoshg/theashutoshg`), the `README.md` in that repo is rendered on your GitHub profile page at `https://github.com/<username>`. It appears above your pinned repos.
+
+This is the fastest way to add a bio to your GitHub presence — no hosting, no DNS, no build. Just a Markdown file.
+
+### One-Time Setup
+
+**Option A: Create via GitHub CLI**
+
+```bash
+# Create a repo matching your username
+gh repo create <username>/<username> --public --description "My profile README"
+```
+
+Then clone it:
+```bash
+git clone https://github.com/<username>/<username>.git
+cd <username>
+```
+
+**Option B: Create via GitHub Web UI**
+
+1. Go to https://github.com/new
+2. Repository name: **exactly** `<your-username>` (e.g. `theashutoshg`)
+   - GitHub will show a hint: *"theashutoshg/<theashutoshg> is a special repository. Its README.md will appear on your GitHub profile!"*
+3. Set to **Public**
+4. Check "Add a README file"
+5. Click "Create repository"
+
+Then clone it:
+```bash
+git clone https://github.com/<username>/<username>.git
+cd <username>
+```
+
+### What to Put in the Profile README
+
+A good profile README is concise (under 80 lines of Markdown). Recommended structure:
+
+```markdown
+# Hi there, I'm <Name> 👋
+
+## About Me
+
+- **Role:** <Title> at <Company>
+- **Focus:** <1-2 sentence summary of what you do>
+- **Location:** 📍 <City>
+- 🔭 Currently working on <project or focus area>
+- 🌱 Learning <what you're exploring>
+- 💬 Ask me about <topics you're happy to discuss>
+- 📫 How to reach me: [LinkedIn](https://linkedin.com/in/<you>) | [Email](mailto:<you>@<domain>)
+
+## GitHub Stats
+
+<!-- Use https://github.com/anuraghazra/github-readme-stats for live stats -->
+![Ashutosh's GitHub stats](https://github-readme-stats.vercel.app/api?username=<username>&show_icons=true&theme=radical)
+
+## Featured Projects
+
+| Project | Description |
+|---------|-------------|
+| [Repo Name](https://github.com/<you>/repo) | Short description |
+
+## Tech Stack
+
+`Java` `Spring Boot` `AWS` `Kafka` `Python` `LLMs` `RAG` `Agentic AI`
+```
+
+### Using Profile Readme Generator Tools
+
+These free tools generate profile README content from a form:
+
+- **https://rahuldkjain.github.io/github-profile-readme-generator/** — fill in fields, get copy-paste Markdown
+- **https://www.canopas.com/github-profile-readme-generator** — alternative generator with more layout options
+- **https://github.com/abbiepalac13/Profile-README-Generator** — simple and clean
+
+### Adding Live GitHub Stats
+
+Use these badge generators to add auto-updating stats to the README:
+
+- **GitHub Readme Stats:** `https://github-readme-stats.vercel.app/api?username=<username>&show_icons=true&theme=radical`
+- **GitHub Streak Stats:** `https://github-readme-streak-stats.herokuapp.com/?user=<username>&theme=radical`
+- **GitHub Top Skills:** `https://github-readme-stats.vercel.app/api/top-langs/?username=<username>&layout=compact`
+
+### Making Updates
+
+After editing `README.md` locally:
+```bash
+git add README.md
+git commit -m "Update profile README: <describe change>"
+git push origin main
+```
+
+Changes appear on your GitHub profile page within seconds.
+
+### Profile README vs. GitHub Pages Site
+
+| Feature | Profile README | GitHub Pages Site |
+|---------|---------------|-------------------|
+| **URL** | `github.com/<username>` | `<username>.github.io` |
+| **Format** | Markdown (`README.md`) | HTML (`index.html`) |
+| **Styling** | GitHub-flavored Markdown + badge images | Full CSS control, custom design |
+| **Hosting** | Automatic (part of GitHub) | GitHub Pages (free static hosting) |
+| **Best for** | Quick bio, stats badges, pinned repos | Full portfolio with custom layout |
+| **Setup time** | 5 minutes | 15-30 minutes |
+
+**Recommendation:** Set up both. The profile README gives visitors a quick overview on GitHub itself. The Pages site is your full portfolio with custom design, case studies, and featured work.
 
 ## Notes
 
